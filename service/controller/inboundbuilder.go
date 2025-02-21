@@ -41,7 +41,7 @@ func InboundBuilder(config *Config, nodeInfo *api.NodeInfo, tag string) (*core.I
 	// SniffingConfig
 	sniffingConfig := &conf.SniffingConfig{
 		Enabled:      true,
-		DestOverride: &conf.StringList{"http", "tls", "quic", "fakedns"},
+		DestOverride: &conf.StringList{"http", "tls", "fakedns"},
 	}
 	if config.DisableSniffing {
 		sniffingConfig.Enabled = false
@@ -184,13 +184,6 @@ func InboundBuilder(config *Config, nodeInfo *api.NodeInfo, tag string) (*core.I
 			Authority:   nodeInfo.Authority,
 		}
 		streamSetting.GRPCConfig = grpcSettings
-	case "quic":
-		quicSettings := &conf.QUICConfig{
-			Header:   nodeInfo.Header,
-			Security: nodeInfo.Security,
-			Key:      nodeInfo.Key,
-		}
-		streamSetting.QUICSettings = quicSettings
 	case "httpupgrade":
 		httpupgradeSettings := &conf.HttpUpgradeConfig{
 			Headers:             nodeInfo.Headers,
@@ -200,6 +193,12 @@ func InboundBuilder(config *Config, nodeInfo *api.NodeInfo, tag string) (*core.I
 		}
 		streamSetting.HTTPUPGRADESettings = httpupgradeSettings
 	case "splithttp":
+		splithttpSetting := &conf.SplitHTTPConfig{
+			Path: nodeInfo.Path,
+			Host: nodeInfo.Host,
+		}
+		streamSetting.SplitHTTPSettings = splithttpSetting
+	case "httpx":
 		splithttpSetting := &conf.SplitHTTPConfig{
 			Path: nodeInfo.Path,
 			Host: nodeInfo.Host,
