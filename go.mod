@@ -23,7 +23,7 @@ require (
 	github.com/spf13/cobra v1.8.1
 	github.com/spf13/viper v1.18.2
 	github.com/stretchr/testify v1.9.0
-	github.com/xtls/xray-core c259e4e4a6e22b34ca2dbbac026fcc2da307919e
+	github.com/xtls/xray-core a35d5719f425f061a3274e2ba51481299853ea82
 	golang.org/x/crypto v0.28.0
 	golang.org/x/net v0.27.0
 	golang.org/x/time v0.7.0
