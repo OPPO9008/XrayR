@@ -169,21 +169,12 @@ func InboundBuilder(config *Config, nodeInfo *api.NodeInfo, tag string) (*core.I
 			Headers:             headers,
 		}
 		streamSetting.WSSettings = wsSettings
-	case "http":
-		hosts := conf.StringList{nodeInfo.Host}
-		httpSettings := &conf.HTTPConfig{
-			Host:    &hosts,
-			Path:    nodeInfo.Path,
-			Method:  nodeInfo.Method,
-			Headers: nodeInfo.HttpHeaders,
-		}
-		streamSetting.HTTPSettings = httpSettings
 	case "grpc":
 		grpcSettings := &conf.GRPCConfig{
 			ServiceName: nodeInfo.ServiceName,
 			Authority:   nodeInfo.Authority,
 		}
-		streamSetting.GRPCConfig = grpcSettings
+		streamSetting.GRPCSettings = grpcSettings
 	case "httpupgrade":
 		httpupgradeSettings := &conf.HttpUpgradeConfig{
 			Headers:             nodeInfo.Headers,
@@ -198,12 +189,12 @@ func InboundBuilder(config *Config, nodeInfo *api.NodeInfo, tag string) (*core.I
 			Host: nodeInfo.Host,
 		}
 		streamSetting.SplitHTTPSettings = splithttpSetting
-	case "httpx":
+	case "xhttp":
 		splithttpSetting := &conf.SplitHTTPConfig{
 			Path: nodeInfo.Path,
 			Host: nodeInfo.Host,
 		}
-		streamSetting.SplitHTTPSettings = splithttpSetting
+		streamSetting.XHTTPSettings = splithttpSetting
 	}
 	streamSetting.Network = &transportProtocol
 

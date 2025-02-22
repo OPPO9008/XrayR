@@ -40,7 +40,6 @@ import (
 	_ "github.com/xtls/xray-core/proxy/vmess/outbound"
 
 	// Transports
-	_ "github.com/xtls/xray-core/transport/internet/http"
 	_ "github.com/xtls/xray-core/transport/internet/kcp"
 	_ "github.com/xtls/xray-core/transport/internet/reality"
 	_ "github.com/xtls/xray-core/transport/internet/tcp"
