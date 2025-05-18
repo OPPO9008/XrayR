@@ -449,6 +449,7 @@ func (d *DefaultDispatcher) routedDispatch(ctx context.Context, link *transport.
 
 	// If there is no outbound with tag as same as the inbound tag
 	if handler == nil {
+		errors.LogWarning(ctx, fmt.Sprintf("no outbound handler found for inbound tag [%s]", inTag))
 		handler = d.ohm.GetDefaultHandler()
 	}
 
