@@ -104,6 +104,7 @@ type DefaultDispatcher struct {
 	fdns        dns.FakeDNSEngine
 	Limiter     *limiter.Limiter
 	RuleManager *rule.Manager
+	SpliceCopyEnable bool
 }
 
 func init() {
@@ -143,6 +144,9 @@ func (d *DefaultDispatcher) Init(config *Config, om outbound.Manager, router rou
 	d.Limiter = limiter.New()
 	d.RuleManager = rule.New()
 	d.dns = dns
+	if config != nil {
+		d.SpliceCopyEnable = config.SpliceCopyEnable
+	}
 	return nil
 }
 
@@ -179,10 +183,11 @@ func (d *DefaultDispatcher) getLink(ctx context.Context) (*transport.Link, *tran
 	sessionInbound := session.InboundFromContext(ctx)
 	var user *protocol.MemoryUser
 	if sessionInbound != nil {
-		// Disable splice to avoid Vision/REALITY bypassing stats path
-		sessionInbound.CanSpliceCopy = 3
 		user = sessionInbound.User
-		sessionInbound.CanSpliceCopy = 3
+		if !d.SpliceCopyEnable {
+			// Disable splice to avoid Vision/REALITY bypassing stats path
+			sessionInbound.CanSpliceCopy = 3
+		}
 	}
 
 	if user != nil && len(user.Email) > 0 {
