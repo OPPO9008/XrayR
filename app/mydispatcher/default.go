@@ -107,6 +107,11 @@ type DefaultDispatcher struct {
 	SpliceCopyEnable bool
 }
 
+// 新增一个只包含 DisableIVCheck 的简单配置结构体
+type ControllerConfig struct {
+	SpliceCopyEnable bool
+}
+
 func init() {
 	common.Must(common.RegisterConfig((*Config)(nil), func(ctx context.Context, config interface{}) (interface{}, error) {
 		// First create the official dispatcher
@@ -144,10 +149,15 @@ func (d *DefaultDispatcher) Init(config *Config, om outbound.Manager, router rou
 	d.Limiter = limiter.New()
 	d.RuleManager = rule.New()
 	d.dns = dns
-	if config != nil {
-		d.SpliceCopyEnable = config.SpliceCopyEnable
-	}
 	return nil
+}
+
+// ApplyControllerConfig 由 controller 在运行时调用，把需要的字段传给 dispatcher
+func (d *DefaultDispatcher) ApplyControllerConfig(cc *ControllerConfig) {
+	if d == nil || cc == nil {
+		return
+	}
+	d.SpliceCopyEnable = cc.SpliceCopyEnable
 }
 
 // Type implements common.HasType for registering as a separate feature, not overriding core dispatcher.
