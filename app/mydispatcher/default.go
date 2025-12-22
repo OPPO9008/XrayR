@@ -107,7 +107,7 @@ type DefaultDispatcher struct {
 	SpliceCopyEnable bool
 }
 
-// 新增一个只包含 DisableIVCheck 的简单配置结构体
+// 新增一个存储config 的简单配置结构体
 type ControllerConfig struct {
 	SpliceCopyEnable bool
 }
